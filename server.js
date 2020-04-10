@@ -12,7 +12,7 @@ const session = require('express-session');
 app.use(express.static("./public"));
 
 // connect db
-require("./db/connectDB");
+require("./db/connectdb");
 
 // io 
 require("./messaging")(http);
