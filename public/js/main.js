@@ -86,6 +86,7 @@ function playsound(evt, msg){
             // send push notification
               Push.create(`${msg.username}`,{
                   body: `${msg.text}`,
+                  logo: "https://admin.enaland.com/img/logo2.png",
                   timeout: 100,
                   onClick: function () {
                       window.focus();
