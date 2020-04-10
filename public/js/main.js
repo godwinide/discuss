@@ -84,7 +84,6 @@ function playsound(evt, msg){
             new Audio("../sounds/" + sounds[1]).play();
             
             // send push notification
-            $("#notify-button").click(function(){
               Push.create(msg.username,{
                   body: msg.text,
                   timeout: 500,
@@ -93,7 +92,6 @@ function playsound(evt, msg){
                       this.close();
                   }
               });
-            });
         }
   }
 }
