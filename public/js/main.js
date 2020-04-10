@@ -19,11 +19,10 @@ socket.on('roomUsers', ({ room, users }) => {
 
 // Message from server
 socket.on('message', message => {
-  playsound("message", message);
   outputMessage(message);
-
   // Scroll down
   chatMessages.scrollTop = chatMessages.scrollHeight;
+  playsound("message", message);
 });
 
 // Message submit
