@@ -84,9 +84,9 @@ function playsound(evt, msg){
             new Audio("../sounds/" + sounds[1]).play();
             
             // send push notification
-              Push.create(msg.username,{
-                  body: msg.text,
-                  timeout: 500,
+              Push.create(`${msg.username}`,{
+                  body: `${msg.text}`,
+                  timeout: 100,
                   onClick: function () {
                       window.focus();
                       this.close();
