@@ -21,6 +21,7 @@
     "mongoose": "^5.9.7",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "push.js": "^1.0.12",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {},
