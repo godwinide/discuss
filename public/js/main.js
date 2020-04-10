@@ -8,6 +8,17 @@ const room = document.querySelector("#room").value;
 
 const socket = io();
 
+// notification permission
+(function reqPerm(){
+  Notification.requestPermission()
+  .then(res => {
+    if(res != ("granted" || "default")){
+      alert("please allow notification");
+      reqPerm();
+    }
+  })
+})()
+
 // Join chatroom
 socket.emit('joinRoom', { username, room });
 
