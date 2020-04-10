@@ -45,7 +45,7 @@ module.exports = http => {
     
         // Runs when client disconnects
         socket.on('disconnect', () => {
-        const user = userLeave(socket.id);
+        // const user = userLeave(socket.id);
     
         if (user) {
             // add to messages array and emit
