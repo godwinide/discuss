@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const {ensureAuthenticated} = require("../config/auth");
 
-router.get("/",(req,res) => {
+router.get("/", ensureAuthenticated, (req,res) => {
     const {room} = req.query;
     res.render("chat", {req, room})
 });
