@@ -77,17 +77,16 @@ const sounds = [
 ];
 
 
-function playsound(evt, msg){
+function playsound(evt, msgs){
   switch(evt){
       case "message":
         if(document.hidden){
             new Audio("../sounds/" + sounds[1]).play();
-            
+            const msg = msgs[msgs.length - 1];
             // send push notification
               Push.create(`${msg.username}`,{
                   body: `${msg.text}`,
                   logo: "https://admin.enaland.com/img/logo2.png",
-                  timeout: 100,
                   onClick: function () {
                       window.focus();
                       this.close();
