@@ -1,0 +1,30 @@
+.login-bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: darkslateblue;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.login-bg form{
+    width: 60vw;
+    margin: auto;
+    height: 60vh;
+    padding: 10px;
+    background-color: #000000;
+    color: #fff;
+    margin-top: 20vh;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-bg form input{
+    display: block;
+    width: 60% !important;
+    margin-bottom: 1rem !important;
+}

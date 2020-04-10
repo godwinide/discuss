@@ -3,10 +3,8 @@ const chatMessages = document.querySelector('.chat-messages');
 const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
 
-// Get username and room from URL
-const { username, room } = Qs.parse(location.search, {
-  ignoreQueryPrefix: true
-});
+const username = document.querySelector("#username").value;
+const room = document.querySelector("#room").value;
 
 const socket = io();
 
@@ -21,7 +19,7 @@ socket.on('roomUsers', ({ room, users }) => {
 
 // Message from server
 socket.on('message', message => {
-  console.log(message);
+  playsound("message");
   outputMessage(message);
 
   // Scroll down
@@ -44,14 +42,20 @@ chatForm.addEventListener('submit', e => {
 });
 
 // Output message to DOM
-function outputMessage(message) {
-  const div = document.createElement('div');
-  div.classList.add('message');
-  div.innerHTML = `<p class="meta">${message.username} <span>${message.time}</span></p>
-  <p class="text">
-    ${message.text}
-  </p>`;
-  document.querySelector('.chat-messages').appendChild(div);
+function outputMessage(messages) {
+  // empty the chat first
+  document.querySelector('.chat-messages').innerHTML = "";
+  messages.forEach(message => {
+    if(!((message.type == "join" && message.text.includes(username)) || (message.type == "left" && message.text.includes(username)))){
+      const div = document.createElement('div');
+      div.classList.add('message');
+      div.innerHTML = `<p class="meta">${message.username} <span>${message.time}</span></p>
+      <p class="text">
+        ${message.text}
+      </p>`;
+      document.querySelector('.chat-messages').appendChild(div);
+    }
+  })
 }
 
 // Add room name to DOM
@@ -65,3 +69,21 @@ function outputUsers(users) {
     ${users.map(user => `<li>${user.username}</li>`).join('')}
   `;
 }
+
+// play sound
+const sounds = [
+  "eventually.mp3",
+  "maybe-one-day.mp3",
+  "open-up.mp3"
+];
+
+
+function playsound(evt){
+  switch(evt){
+      case "message":
+        if(document.hidden){
+            new Audio("../sounds/" + sounds[1]).play()
+        }
+  }
+}
+

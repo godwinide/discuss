@@ -1,75 +1,69 @@
-const path = require('path');
-const http = require('http');
-const express = require('express');
-const socketio = require('socket.io');
-const formatMessage = require('./utils/messages');
-const {
-  userJoin,
-  getCurrentUser,
-  userLeave,
-  getRoomUsers
-} = require('./utils/users');
-
+const express = require("express");
 const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
+const http = require("http").createServer(app);
 
-// Set static folder
-app.use(express.static(path.join(__dirname, 'public')));
+const expressLayouts = require("express-ejs-layouts");
+const passport = require('passport');
+const flash = require('connect-flash');
+const session = require('express-session');
 
-const botName = 'ChatCord Bot';
 
-// Run when client connects
-io.on('connection', socket => {
-  socket.on('joinRoom', ({ username, room }) => {
-    const user = userJoin(socket.id, username, room);
+// MIDDLEWARES
+app.use(express.static("./public"));
 
-    socket.join(user.room);
+// connect db
+require("./db/connectDB");
 
-    // Welcome current user
-    socket.emit('message', formatMessage(botName, 'Welcome to ChatCord!'));
+// io 
+require("./messaging")(http);
 
-    // Broadcast when a user connects
-    socket.broadcast
-      .to(user.room)
-      .emit(
-        'message',
-        formatMessage(botName, `${user.username} has joined the chat`)
-      );
+// Passport Config
+require('./config/passport')(passport);
 
-    // Send users and room info
-    io.to(user.room).emit('roomUsers', {
-      room: user.room,
-      users: getRoomUsers(user.room)
-    });
+
+// ejs
+app.use(expressLayouts);
+app.set("view engine", 'ejs');
+
+
+// Express body parser
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+
+// Express session
+app.use(
+    session({
+      secret: 'secret',
+      resave: true,
+      saveUninitialized: true
+    })
+);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+  
+
+  
+  // Connect flash
+  app.use(flash());
+  
+  // Global variables
+  app.use(function(req, res, next) {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    next();
   });
 
-  // Listen for chatMessage
-  socket.on('chatMessage', msg => {
-    const user = getCurrentUser(socket.id);
 
-    io.to(user.room).emit('message', formatMessage(user.username, msg));
-  });
+// ROUTES
+app.use("/", require("./routes/index"));
+app.use("/login", require("./routes/auth"));
+app.use("/chat", require("./routes/chat"));
 
-  // Runs when client disconnects
-  socket.on('disconnect', () => {
-    const user = userLeave(socket.id);
 
-    if (user) {
-      io.to(user.room).emit(
-        'message',
-        formatMessage(botName, `${user.username} has left the chat`)
-      );
+const PORT = 9000;
 
-      // Send users and room info
-      io.to(user.room).emit('roomUsers', {
-        room: user.room,
-        users: getRoomUsers(user.room)
-      });
-    }
-  });
-});
-
-const PORT = process.env.PORT || 3000;
-
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+http.listen(PORT, ()=> console.log(`server started on port ${PORT}`));
