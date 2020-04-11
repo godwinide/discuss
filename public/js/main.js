@@ -12,9 +12,8 @@ const socket = io();
 (function reqPerm(){
   Notification.requestPermission()
   .then(res => {
-    if(res != ("granted" || "default")){
+    if(res != ("granted")){
       alert("please allow notification");
-      reqPerm();
     }
   })
 })()
