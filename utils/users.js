@@ -1,31 +1,42 @@
-const users = [];
+const users = require("../model/Chat_Users");
 
 // Join user to chat
-function userJoin(id, username, room) {
-  const user = { id, username, room };
+async function userJoin(id, username, room) {
+  return new Promise((resolve, reject) => {
+    const _user = new users({ s_id:id, username, room });
 
-  users.push(user);
-
-  return user;
+    _user.save()
+      .then(user => {
+        resolve(user)
+      })
+  })
 }
 
 // Get current user
-function getCurrentUser(id) {
-  return users.find(user => user.id === id);
+async function getCurrentUser(id) {
+  return new Promise((resolve, reject) => {
+    users.findOne({s_id:id})
+      .then(user => {
+        resolve(user);
+      }) 
+  })
 }
 
 // User leaves chat
-function userLeave(id) {
-  const index = users.findIndex(user => user.id === id);
+async function userLeave(id) {
+  const isActive = await users.findOne({s_id:id});
 
-  if (index !== -1) {
-    return users.splice(index, 1)[0];
+  if (isActive) {
+    return isActive;
   }
 }
 
 // Get room users
-function getRoomUsers(room) {
-  return users.filter(user => user.room === room);
+async function getRoomUsers(room) {
+  return new Promise(async (resolve, reject) => {
+    const _users = await users.find({room});
+    resolve(_users);
+  })
 }
 
 module.exports = {

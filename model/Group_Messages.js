@@ -2,16 +2,24 @@ const {model, Schema} = require("mongoose");
 
 
 
-const Group_Messages = new Schema({
-    sender: {
-        type: Object,
-        required: true
+const MessagesSchema = new Schema({
+    username:{
+        type: String,
+        required: false
     },
-    date:{
-        type: Date,
-        default: Date.now
+    type: {
+        type: String,
+        required: false
+    },
+    text: {
+        type: String,
+        required: false
+    },
+    time: {
+        type: String,
+        required: false
     }
 });
 
 
-module.exports = Group_Messages = model("Group_Messages", Group_Messages);
+module.exports = Messages = model("Messages", MessagesSchema);

@@ -24,14 +24,5 @@
     "push.js": "^1.0.12",
     "socket.io": "^2.3.0"
   },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bradtraversy/chatcord.git"
-  },
-  "bugs": {
-    "url": "https://github.com/bradtraversy/chatcord/issues"
-  },
-  "homepage": "https://github.com/bradtraversy/chatcord#readme",
-  "description": ""
+  "devDependencies": {}
 }
