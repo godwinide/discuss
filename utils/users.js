@@ -3,11 +3,22 @@ const users = require("../model/Chat_Users");
 // Join user to chat
 async function userJoin(id, username, room) {
   return new Promise((resolve, reject) => {
-    const _user = new users({ s_id:id, username, room });
-
-    _user.save()
+    users.findOne({s_id:id})
       .then(user => {
-        resolve(user)
+        // check if use already exists
+        if(user){
+          // no need to create new user
+          users.findOneAndUpdate({s_id:id})
+            .then(user => {
+              resolve(user)
+            })
+        }else{
+          const _user = new users({ s_id:id, username, room });
+          _user.save()
+            .then(user => {
+              resolve(user)
+            })
+        }
       })
   })
 }
@@ -27,7 +38,10 @@ async function userLeave(id) {
   const isActive = await users.findOne({s_id:id});
 
   if (isActive) {
-    return isActive;
+    users.deleteOne({s_id:id})
+    .then(()=>{
+      return isActive;
+    })
   }
 }
 
