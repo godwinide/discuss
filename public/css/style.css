@@ -8,6 +8,16 @@
 	--error-color: #d9534f;
 }
 
+
+.sub{
+	padding: 3px;
+	width: 3px;
+	height: 3px;
+	background-color: rgb(13, 255, 13);
+	border-radius: 50%;
+	display: inline-block !important;
+}
+
 * {
 	box-sizing: border-box;
 	margin: 0;
@@ -183,7 +193,7 @@ a {
 		display: block;
 	}
 
-	.chat-sidebar {
+	/* .chat-sidebar {
 		display: none;
-	}
+	} */
 }

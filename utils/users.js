@@ -10,13 +10,13 @@ async function userJoin(id, username, room) {
           // no need to create new user
           users.findOneAndUpdate({s_id:id})
             .then(user => {
-              resolve(user)
+              return resolve(user)
             })
         }else{
           const _user = new users({ s_id:id, username, room });
           _user.save()
             .then(user => {
-              resolve(user)
+              return resolve(user)
             })
         }
       })
