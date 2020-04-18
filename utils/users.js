@@ -3,12 +3,12 @@ const users = require("../model/Chat_Users");
 // Join user to chat
 async function userJoin(id, username, room) {
   return new Promise((resolve, reject) => {
-    users.findOne({s_id:id})
+    users.findOne({username}, {s_id:id})
       .then(user => {
         // check if use already exists
         if(user){
           // no need to create new user
-          users.findOneAndUpdate({s_id:id})
+          users.findOneAndUpdate({username}, {s_id:id})
             .then(user => {
               return resolve(user)
             })
